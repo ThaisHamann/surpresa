@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surpresa 💖</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: #2c2c2c;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      overflow: hidden;
+      position: relative;
+      height: 100vh;
+    }
+
+    .popup {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #444;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 10;
+      width: 90%;
+      max-width: 300px;
+    }
+
+    .popup p {
+      font-size: 18px;
+    }
+
+    .popup button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #e63946;
+      color: white;
+      position: relative;
+    }
+
+    #botaoSim {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      opacity: 0.3;
+      background-color: #06d6a0;
+      font-size: 14px;
+      padding: 8px 16px;
+      z-index: 20;
+    }
+
+    #contador {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      display: none;
+    }
+
+    .coracoes {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: none;
+      pointer-events: none;
+    }
+
+    .coração {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      transform: rotate(45deg);
+      animation: subir 5s linear infinite;
+    }
+
+    .coração::before,
+    .coração::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .coração::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .coração::after {
+      top: 0;
+      left: -10px;
+    }
+
+    @keyframes subir {
+      0% {
+        bottom: 0;
+        opacity: 1;
+      }
+      100% {
+        bottom: 100%;
+        opacity: 0;
+      }
+    }
+
+    .baú {
+      display: none;
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 50px;
+      background: brown;
+      border: 4px solid #333;
+      border-radius: 8px;
+      animation: pular 1s infinite;
+      z-index: 5;
+    }
+
+    .brilho {
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      background: yellow;
+      border-radius: 50%;
+      opacity: 0;
+      animation: brilhar 2s ease-out forwards;
+    }
+
+    @keyframes pular {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+
+    @keyframes brilhar {
+      0% { opacity: 0; transform: scale(0.2); }
+      100% { opacity: 1; transform: scale(2); }
+    }
+
+    #mensagemFinal {
+      display: none;
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      color: gold;
+      text-align: center;
+      text-shadow: 0 0 10px gold;
+      padding: 0 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="popup" id="popup">
+    <p>Deseja continuar mesmo sabendo dos riscos?</p>
+    <button id="nao">Não</button>
+  </div>
+
+  <button id="botaoSim">Sim</button>
+
+  <div id="contador">5</div>
+
+  <div class="coracoes" id="coracoes"></div>
+
+  <div class="baú" id="bau"></div>
+
+  <div id="mensagemFinal">Te amo para sempre 💖</div>
+
+  <script>
+    const btnNao = document.getElementById('nao');
+    const btnSim = document.getElementById('botaoSim');
+    const popup = document.getElementById('popup');
+    const contador = document.getElementById('contador');
+    const coracoes = document.getElementById('coracoes');
+    const bau = document.getElementById('bau');
+    const mensagem = document.getElementById('mensagemFinal');
+
+    btnNao.addEventListener('touchstart', moverBotao);
+    btnNao.addEventListener('mouseover', moverBotao);
+
+    function moverBotao() {
+      const randomX = Math.random() * (window.innerWidth - 100);
+      const randomY = Math.random() * (window.innerHeight - 100);
+      btnNao.style.position = 'absolute';
+      btnNao.style.left = ${randomX}px;
+      btnNao.style.top = ${randomY}px;
+    }
+
+    btnSim.addEventListener('click', () => {
+      popup.style.display = 'none';
+      contador.style.display = 'block';
+      let tempo = 5;
+      const intervalo = setInterval(() => {
+        contador.textContent = tempo;
+        tempo--;
+        if (tempo < 0) {
+          clearInterval(intervalo);
+          contador.style.display = 'none';
+          mostrarAnimacao();
+        }
+      }, 1000);
+    });
+
+    function mostrarAnimacao() {
+      coracoes.style.display = 'block';
+      for (let i = 0; i < 30; i++) {
+        const coracao = document.createElement('div');
+        coracao.className = 'coração';
+        coracao.style.left = Math.random() * 100 + '%';
+        coracao.style.animationDuration = 2 + Math.random() * 3 + 's';
+        coracoes.appendChild(coracao);
+      }
+
+      bau.style.display = 'block';
+
+      setTimeout(() => {
+        for (let i = 0; i < 10; i++) {
+          const brilho = document.createElement('div');
+          brilho.className = 'brilho';
+          brilho.style.left = ${40 + Math.random() * 20}%;
+          bau.appendChild(brilho);
+        }
+        mensagem.style.display = 'block';
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
